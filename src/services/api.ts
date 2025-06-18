@@ -2,16 +2,16 @@ import axios from 'axios';
 import type {
   User,
   Service,
-  Appointment,
+  Meeting,
   LoginCredentials,
   RegisterData,
   CreateServiceData,
   UpdateServiceData,
-  CreateAppointmentData,
-  UpdateAppointmentData,
+  CreateMeetingData,
+  UpdateMeetingData,
 } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.API_BASE_URL || 'http://localhost:3000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -45,31 +45,31 @@ api.interceptors.response.use(
 // Auth API
 export const authAPI = {
   login: async (credentials: LoginCredentials): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/auth/login', credentials);
+    const response = await api.post('/login', credentials);
     return response.data;
   },
 
   register: async (data: RegisterData): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/auth/register', data);
+    const response = await api.post('/login/register', data);
     return response.data;
   },
 
   loginWithGoogle: async (googleToken: string): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/auth/google', { token: googleToken });
+    const response = await api.post('/google', { token: googleToken });
     return response.data;
   },
 
   refreshToken: async (): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/auth/refresh');
+    const response = await api.post('/refresh');
     return response.data;
   },
 
   logout: async (): Promise<void> => {
-    await api.post('/auth/logout');
+    await api.post('/logout');
   },
 
   getProfile: async (): Promise<User> => {
-    const response = await api.get('/auth/profile');
+    const response = await api.get('/profile');
     return response.data;
   },
 };
@@ -100,45 +100,45 @@ export const servicesAPI = {
     await api.delete(`/services/${id}`);
   },
 
-  getOwnerServices: async (): Promise<Service[]> => {
-    const response = await api.get('/services/owner');
+  getManagerServices: async (): Promise<Service[]> => {
+    const response = await api.get('/services/manager');
     return response.data;
   },
 };
 
-// Appointments API
-export const appointmentsAPI = {
-  getAppointments: async (): Promise<Appointment[]> => {
-    const response = await api.get('/appointments');
+// Meetings API
+export const meetingsAPI = {
+  getMeetings: async (): Promise<Meeting[]> => {
+    const response = await api.get('/meetings');
     return response.data;
   },
 
-  getAppointmentById: async (id: string): Promise<Appointment> => {
-    const response = await api.get(`/appointments/${id}`);
+  getMeetingById: async (id: string): Promise<Meeting> => {
+    const response = await api.get(`/meetings/${id}`);
     return response.data;
   },
 
-  createAppointment: async (data: CreateAppointmentData): Promise<Appointment> => {
-    const response = await api.post('/appointments', data);
+  createMeeting: async (data: CreateMeetingData): Promise<Meeting> => {
+    const response = await api.post('/meetings', data);
     return response.data;
   },
 
-  updateAppointment: async (id: string, data: UpdateAppointmentData): Promise<Appointment> => {
-    const response = await api.put(`/appointments/${id}`, data);
+  updateMeeting: async (id: string, data: UpdateMeetingData): Promise<Meeting> => {
+    const response = await api.put(`/meetings/${id}`, data);
     return response.data;
   },
 
-  deleteAppointment: async (id: string): Promise<void> => {
-    await api.delete(`/appointments/${id}`);
+  deleteMeeting: async (id: string): Promise<void> => {
+    await api.delete(`/meetings/${id}`);
   },
 
-  getOwnerAppointments: async (): Promise<Appointment[]> => {
-    const response = await api.get('/appointments/owner');
+  getManagerMeetings: async (): Promise<Meeting[]> => {
+    const response = await api.get('/meetings/manager');
     return response.data;
   },
 
-  getClientAppointments: async (): Promise<Appointment[]> => {
-    const response = await api.get('/appointments/client');
+  getClientMeetings: async (): Promise<Meeting[]> => {
+    const response = await api.get('/meetings/client');
     return response.data;
   },
 };

@@ -181,7 +181,7 @@ const ServicesPage: React.FC = () => {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{service.name}</h3>
                 <div className="flex items-center text-sm text-gray-600 mb-2">
                   <Tag className="h-4 w-4 mr-1" />
-                  {service.category}
+                  {/* {service.category} */}
                 </div>
               </div>
               <div className="flex space-x-2">
@@ -193,7 +193,7 @@ const ServicesPage: React.FC = () => {
                   <Edit2 className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => handleDelete(service.id)}
+                  onClick={() => handleDelete(service.id.toString())}
                   disabled={isLoading}
                   className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
                 >

@@ -11,7 +11,7 @@ const initialState: AuthState = {
 
 // Async thunks
 export const loginUser = createAsyncThunk(
-  'auth/login',
+  '/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await authAPI.login(credentials);
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
 );
 
 export const registerUser = createAsyncThunk(
-  'auth/register',
+  '/register',
   async (data: RegisterData, { rejectWithValue }) => {
     try {
       const response = await authAPI.register(data);
@@ -39,7 +39,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginWithGoogle = createAsyncThunk(
-  'auth/loginWithGoogle',
+  '/loginWithGoogle',
   async (googleToken: string, { rejectWithValue }) => {
     try {
       const response = await authAPI.loginWithGoogle(googleToken);
@@ -53,7 +53,7 @@ export const loginWithGoogle = createAsyncThunk(
 );
 
 export const refreshToken = createAsyncThunk(
-  'auth/refreshToken',
+  '/refreshToken',
   async (_, { rejectWithValue }) => {
     try {
       const response = await authAPI.refreshToken();
@@ -67,7 +67,7 @@ export const refreshToken = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk(
-  'auth/logout',
+  '/logout',
   async (_, { rejectWithValue }) => {
     try {
       await authAPI.logout();
@@ -83,7 +83,7 @@ export const logoutUser = createAsyncThunk(
 );
 
 export const initializeAuth = createAsyncThunk(
-  'auth/initialize',
+  '/initialize',
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');

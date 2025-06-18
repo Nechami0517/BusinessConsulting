@@ -4,7 +4,7 @@ import { useAppSelector } from '../hooks/redux';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: 'owner' | 'client';
+  requiredRole?: 'manager' | 'client';
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole }) => {
@@ -23,7 +23,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
   }
 
   if (requiredRole && user.role !== requiredRole) {
-    return <Navigate to={user.role === 'owner' ? '/owner' : '/client'} replace />;
+    return <Navigate to={user.role === 'manager' ? '/manager' : '/client'} replace />;
   }
 
   return <>{children}</>;

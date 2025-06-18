@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from './hooks/redux';
 import { initializeAuth } from './store/slices/authSlice';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
-import OwnerDashboard from './pages/owner/OwnerDashboard';
+import ManagerDashboard from './pages/manager/ManagerDashboard';
 import ClientDashboard from './pages/client/ClientDashboard';
 
 const AppContent: React.FC = () => {
@@ -29,10 +29,10 @@ const AppContent: React.FC = () => {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route 
-        path="/owner/*" 
+        path="/manager/*" 
         element={
-          <ProtectedRoute requiredRole="owner">
-            <OwnerDashboard />
+          <ProtectedRoute requiredRole="manager">
+            <ManagerDashboard />
           </ProtectedRoute>
         } 
       />
@@ -48,7 +48,7 @@ const AppContent: React.FC = () => {
         path="/" 
         element={
           user ? (
-            <Navigate to={user.role === 'owner' ? '/owner' : '/client'} replace />
+            <Navigate to={user.role === 'manager' ? '/manager' : '/client'} replace />
           ) : (
             <Navigate to="/login" replace />
           )
