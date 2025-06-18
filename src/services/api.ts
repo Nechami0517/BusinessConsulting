@@ -11,7 +11,7 @@ import type {
   UpdateMeetingData,
 } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.API_BASE_URL || 'http://localhost:3000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -55,19 +55,23 @@ export const authAPI = {
   },
 
   loginWithGoogle: async (googleToken: string): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/auth/google', { token: googleToken });
+    const response = await api.post('/google', { token: googleToken });
     return response.data;
   },
 
   refreshToken: async (): Promise<{ user: User; token: string }> => {
-    const response = await api.post('/auth/refresh');
+    const response = await api.post('/refresh');
     return response.data;
   },
 
   logout: async (): Promise<void> => {
-    await api.post('/auth/logout');
+    await api.post('/logout');
   },
 
+  getProfile: async (): Promise<User> => {
+    const response = await api.get('/profile');
+    return response.data;
+  },
 };
 
 // Services API
@@ -96,8 +100,8 @@ export const servicesAPI = {
     await api.delete(`/services/${id}`);
   },
 
-  getOwnerServices: async (): Promise<Service[]> => {
-    const response = await api.get('/services/owner');
+  getManagerServices: async (): Promise<Service[]> => {
+    const response = await api.get('/services/manager');
     return response.data;
   },
 };
@@ -128,8 +132,8 @@ export const meetingsAPI = {
     await api.delete(`/meetings/${id}`);
   },
 
-  getOwnerMeetings: async (): Promise<Meeting[]> => {
-    const response = await api.get('/meetings/owner');
+  getManagerMeetings: async (): Promise<Meeting[]> => {
+    const response = await api.get('/meetings/manager');
     return response.data;
   },
 

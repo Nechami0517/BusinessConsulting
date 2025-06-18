@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from './hooks/redux';
 import { initializeAuth } from './store/slices/authSlice';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
-import OwnerDashboard from './pages/owner/OwnerDashboard';
+import ManagerDashboard from './pages/manager/ManagerDashboard';
 import ClientDashboard from './pages/client/ClientDashboard';
 
 const AppContent: React.FC = () => {
@@ -32,7 +32,7 @@ const AppContent: React.FC = () => {
         path="/manager/*" 
         element={
           <ProtectedRoute requiredRole="manager">
-            <OwnerDashboard />
+            <ManagerDashboard />
           </ProtectedRoute>
         } 
       />

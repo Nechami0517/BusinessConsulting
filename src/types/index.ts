@@ -2,7 +2,7 @@
 //   id: string;
 //   email: string;
 //   name: string;
-//   role: 'owner' | 'client';
+//   role: 'manager' | 'client';
 //   avatar?: string;
 //   createdAt: string;
 //   updatedAt: string;
@@ -16,7 +16,7 @@
 //   duration: number; // in minutes
 //   category: string;
 //   isActive: boolean;
-//   ownerId: string;
+//   managerId: string;
 //   createdAt: string;
 //   updatedAt: string;
 // }
@@ -25,7 +25,7 @@
 //   id: string;
 //   serviceId: string;
 //   clientId: string;
-//   ownerId: string;
+//   managerId: string;
 //   clientName: string;
 //   clientEmail: string;
 //   date: string;
@@ -50,7 +50,7 @@
 // }
 
 // export interface MeetingsState {
-//   Meetings: Meeting[];
+//   meetings: Meeting[];
 //   isLoading: boolean;
 //   error: string | null;
 // }
@@ -64,9 +64,8 @@
 //   email: string;
 //   password: string;
 //   name: string;
-//   role: 'owner' | 'client';
+//   role: 'manager' | 'client';
 // }
-
 
 
 
@@ -86,7 +85,7 @@ export interface User {
   name: string;
   phone?: string;
   email: string;
-  role: 'client'  | 'manager'; // או להוסיף 'owner' אם יש צורך
+  role: 'manager'; 
 }
 
 export interface Meeting {
@@ -126,7 +125,7 @@ export interface ServicesState {
 }
 
 export interface MeetingState {
-  meetings: Meeting[]; 
+  meetings: Meeting[]; // או MeetingTimeSlot תלוי מה אתה צריך
   isLoading: boolean;
   error: string | null;
 }
@@ -138,25 +137,11 @@ export interface LoginCredentials {
 
 export interface RegisterData {
   name: string;
-  phone:string
   email: string;
   password: string;
+  phone:string;
 }
-
-
-export interface CreateServiceData {
-  name: string;
-  description: string;
-  price: number;
-  duration: number;
-  category: string;
-}
-
-export interface UpdateServiceData extends Partial<CreateServiceData> {
-  isActive?: boolean;
-}
-
-export interface CreateMeetingData {
+export interface  CreateMeetingData{
   serviceId: string;
   date: string;
   time: string;
@@ -168,4 +153,15 @@ export interface UpdateMeetingData {
   date?: string;
   time?: string;
   notes?: string;
+}
+export interface CreateServiceData {
+  name: string;
+  description: string;
+  price: number;
+  duration: number;
+  category: string;
+}
+
+export interface UpdateServiceData extends Partial<CreateServiceData> {
+  isActive?: boolean;
 }

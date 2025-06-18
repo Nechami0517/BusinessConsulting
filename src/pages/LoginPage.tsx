@@ -42,22 +42,41 @@ const LoginPage: React.FC = () => {
     dispatch(loginUser({ email, password }));
   };
 
+  // const handleRegister = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   // אם המשתמש כבר לחץ על כפתור ההרשמה
+  //   if (registering) {
+  //     // ודא שכל השדות מלאים
+  //     if (!name || !email || !password || !phone) {
+  //       return;
+  //     }
+
+  //     // שלח את הקריאה לשרת כדי ליצור לקוח
+  //     setRegistering(true);
+  //     await dispatch(registerUser({ name, phone, email, password }));
+  //     setRegistering(false);
+  //   } else {
+  //     // אם לא, הפעל את מצב ההרשמה
+  //     setRegistering(true);
+  //   }
+  // };
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (registering) {
+      // ודא שכל השדות מלאים
       if (!name || !email || !password || !phone) {
         return;
       }
-
+  
+      // שלח את הקריאה לשרת כדי ליצור לקוח
       setRegistering(true);
-      // כאן תוכל לקרוא לפונקציה של ההרשמה, לדוגמה:
       await dispatch(registerUser({ name, phone, email, password }));
       setRegistering(false);
-    }
-    else{
+    } else {
+      // אם לא, הפעל את מצב ההרשמה
       setRegistering(true);
-      return;
     }
   };
 
@@ -127,21 +146,63 @@ const LoginPage: React.FC = () => {
                   className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
                   placeholder="Enter your password"
                 />
-
-                <div>
-                  <button
-                    type="button"
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                    ) : (
-                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                    )}
-                  </button>
-                </div>
+                 <div>
+                <button
+                  type="button"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                  )}
+                </button>
               </div>
+              </div>
+              {registering && (
+                <>
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Name
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full pl-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
+                      placeholder="Enter your name"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Phone
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full pl-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
+                      placeholder="Enter your phone number"
+                    />
+                  </div>
+                </>
+              )}
+
+             
             </div>
             {registering && (
               <div>
@@ -207,10 +268,16 @@ const LoginPage: React.FC = () => {
             </button>
             <button
               onClick={handleRegister}
-              disabled={isLoading}
-              className="w-full flex items-center justify-center py-3 px-4 rounded-xl text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 font-medium group disabled:opacity-50 disabled:cursor-not-allowed">
+              className="w-full flex items-center justify-center py-3 px-4 rounded-xl text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 font-medium group disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {/* {registering ? (
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              ) : ( */}
+                <>
                   Sign Up
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </>
+              {/* )} */}
             </button>
           </form>
 

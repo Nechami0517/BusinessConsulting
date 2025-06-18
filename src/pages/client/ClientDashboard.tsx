@@ -19,7 +19,7 @@ const ClientDashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { services, isLoading: servicesLoading } = useAppSelector((state) => state.services);
-  const { isLoading: meetingsLoading } = useAppSelector((state) => state.Meetings);
+  const { isLoading: meetingsLoading } = useAppSelector((state) => state.meetings);
 
   useEffect(() => {
     dispatch(fetchServices());
@@ -148,7 +148,7 @@ const ClientDashboard: React.FC = () => {
                     Your meeting for <strong>{selectedService?.name}</strong> has been submitted.
                   </p>
                   <p className="text-sm text-gray-500">
-                    The business owner will review and confirm your meeting shortly.
+                    The business manager will review and confirm your meeting shortly.
                   </p>
                 </div>
               ) : (
