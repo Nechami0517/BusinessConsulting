@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { loginUser, loginWithGoogle, clearError } from '../store/slices/authSlice';
-import { Eye, EyeOff, Mail, Lock, Chrome, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import {
+  loginUser,
+  loginWithGoogle,
+  registerUser,
+  clearError,
+} from "../store/slices/authSlice";
+import { Eye, EyeOff, Mail, Lock, Chrome, ArrowRight } from "lucide-react";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  
+  const [registering, setRegistering] = useState(false);
+
   const dispatch = useAppDispatch();
   const { user, isLoading, error } = useAppSelector((state) => state.auth);
 
@@ -19,12 +27,14 @@ const LoginPage: React.FC = () => {
   }, [dispatch]);
 
   if (user) {
-    return <Navigate to={user.role === 'owner' ? '/owner' : '/client'} replace />;
+    return (
+      <Navigate to={user.role === "manager" ? "/manager" : "/client"} replace />
+    );
   }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       return;
     }
@@ -32,10 +42,29 @@ const LoginPage: React.FC = () => {
     dispatch(loginUser({ email, password }));
   };
 
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (registering) {
+      if (!name || !email || !password || !phone) {
+        return;
+      }
+
+      setRegistering(true);
+      // כאן תוכל לקרוא לפונקציה של ההרשמה, לדוגמה:
+      await dispatch(registerUser({ name, phone, email, password }));
+      setRegistering(false);
+    }
+    else{
+      setRegistering(true);
+      return;
+    }
+  };
+
   const handleGoogleLogin = async () => {
     // In a real app, this would integrate with Google OAuth
     // For demo purposes, we'll simulate a Google login
-    dispatch(loginWithGoogle('mock-google-token'));
+    dispatch(loginWithGoogle("mock-google-token"));
   };
 
   return (
@@ -45,14 +74,21 @@ const LoginPage: React.FC = () => {
           <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-2xl flex items-center justify-center mb-4">
             <Chrome className="h-8 w-8 text-white" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-          <p className="text-gray-600">Sign in to your business management platform</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome Back
+          </h2>
+          <p className="text-gray-600">
+            Sign in to your business management platform
+          </p>
         </div>
 
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
           <form className="space-y-6" onSubmit={handleLogin}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -72,7 +108,10 @@ const LoginPage: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Password
               </label>
               <div className="relative">
@@ -80,7 +119,7 @@ const LoginPage: React.FC = () => {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   required
                   value={password}
@@ -88,19 +127,63 @@ const LoginPage: React.FC = () => {
                   className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
                   placeholder="Enter your password"
                 />
-                <button
-                  type="button"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                  )}
-                </button>
+
+                <div>
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
+            {registering && (
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full pl-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
+                  placeholder="Enter your name"
+                />
+              </div>
+            )}
+
+            {registering && (
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Phone
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full pl-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+            )}
 
             {error && (
               <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg border border-red-200">
@@ -122,6 +205,13 @@ const LoginPage: React.FC = () => {
                 </>
               )}
             </button>
+            <button
+              onClick={handleRegister}
+              disabled={isLoading}
+              className="w-full flex items-center justify-center py-3 px-4 rounded-xl text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 font-medium group disabled:opacity-50 disabled:cursor-not-allowed">
+                  Sign Up
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </button>
           </form>
 
           <div className="mt-6">
@@ -130,7 +220,9 @@ const LoginPage: React.FC = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                <span className="px-2 bg-white text-gray-500">
+                  Or continue with
+                </span>
               </div>
             </div>
 

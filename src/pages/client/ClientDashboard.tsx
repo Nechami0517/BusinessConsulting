@@ -19,7 +19,7 @@ const ClientDashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { services, isLoading: servicesLoading } = useAppSelector((state) => state.services);
-  const { isLoading: meetingsLoading } = useAppSelector((state) => state.meetings);
+  const { isLoading: meetingsLoading } = useAppSelector((state) => state.Meetings);
 
   useEffect(() => {
     dispatch(fetchServices());

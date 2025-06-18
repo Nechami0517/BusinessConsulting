@@ -29,9 +29,9 @@ const AppContent: React.FC = () => {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route 
-        path="/owner/*" 
+        path="/manager/*" 
         element={
-          <ProtectedRoute requiredRole="owner">
+          <ProtectedRoute requiredRole="manager">
             <OwnerDashboard />
           </ProtectedRoute>
         } 
@@ -42,13 +42,14 @@ const AppContent: React.FC = () => {
           <ProtectedRoute requiredRole="client">
             <ClientDashboard />
           </ProtectedRoute>
+          
         } 
       />
       <Route 
         path="/" 
         element={
           user ? (
-            <Navigate to={user.role === 'owner' ? '/owner' : '/client'} replace />
+            <Navigate to={user.role === 'manager' ? '/manager' : '/client'} replace />
           ) : (
             <Navigate to="/login" replace />
           )
@@ -56,7 +57,7 @@ const AppContent: React.FC = () => {
       />
       <Route path="*" element={<Navigate to="/\" replace />} />
     </Routes>
-  );
+  ); 
 };
 
 function App() {

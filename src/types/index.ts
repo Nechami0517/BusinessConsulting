@@ -137,10 +137,10 @@ export interface LoginCredentials {
 }
 
 export interface RegisterData {
+  name: string;
+  phone:string
   email: string;
   password: string;
-  name: string;
-  role: 'manager' | 'client'; // בהתאם למודל שלך
 }
 
 
