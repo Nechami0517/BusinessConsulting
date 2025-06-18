@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchOwnerServices } from '../../store/slices/servicesSlice';
-import { fetchOwnerAppointments } from '../../store/slices/appointmentsSlice';
+import { fetchOwnerMeetings } from '../../store/slices/meetingsSlice';
 import { logoutUser } from '../../store/slices/authSlice';
 import { LogOut, BarChart3, Calendar, Settings, Users } from 'lucide-react';
 import ServicesPage from './ServicesPage';
-import AppointmentsPage from './AppointmentsPage';
+import MeetingsPage from './MeetingsPage';
 
 const OwnerDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'appointments'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'Meetings'>('overview');
   
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { services } = useAppSelector((state) => state.services);
-  const { appointments } = useAppSelector((state) => state.appointments);
+  const { Meetings } = useAppSelector((state) => state.Meetings);
 
   useEffect(() => {
     dispatch(fetchOwnerServices());
-    dispatch(fetchOwnerAppointments());
+    dispatch(fetchOwnerMeetings());
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -32,14 +32,14 @@ const OwnerDashboard: React.FC = () => {
       color: 'bg-blue-500'
     },
     {
-      name: 'Active Appointments',
-      value: appointments.filter(apt => apt.status !== 'cancelled').length,
+      name: 'Active Meetings',
+      value: Meetings.filter(apt => apt.status !== 'cancelled').length,
       icon: Calendar,
       color: 'bg-emerald-500'
     },
     {
       name: 'Pending Approvals',
-      value: appointments.filter(apt => apt.status === 'pending').length,
+      value: Meetings.filter(apt => apt.status === 'pending').length,
       icon: Users,
       color: 'bg-amber-500'
     },
@@ -54,7 +54,7 @@ const OwnerDashboard: React.FC = () => {
   const tabs = [
     { id: 'overview', name: 'Overview', icon: BarChart3 },
     { id: 'services', name: 'Services', icon: Settings },
-    { id: 'appointments', name: 'Appointments', icon: Calendar }
+    { id: 'Meetings', name: 'Meetings', icon: Calendar }
   ];
 
   return (
@@ -132,24 +132,24 @@ const OwnerDashboard: React.FC = () => {
 
             {/* Recent Activity */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Appointments</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Meetings</h3>
               <div className="space-y-3">
-                {appointments.slice(0, 5).map((appointment) => {
-                  const service = services.find(s => s.id === appointment.serviceId);
+                {Meetings.slice(0, 5).map((Meeting) => {
+                  const service = services.find(s => s.id === Meeting.serviceId);
                   return (
-                    <div key={appointment.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                    <div key={Meeting.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                       <div>
-                        <p className="font-medium text-gray-900">{appointment.clientName}</p>
+                        <p className="font-medium text-gray-900">{Meeting.clientName}</p>
                         <p className="text-gray-600 text-sm">{service?.name}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-gray-600">{appointment.date} at {appointment.time}</p>
+                        <p className="text-sm text-gray-600">{Meeting.date} at {Meeting.time}</p>
                         <span className={`inline-flex px-2 py-1 text-xs rounded-full ${
-                          appointment.status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                          appointment.status === 'pending' ? 'bg-amber-100 text-amber-800' :
+                          Meeting.status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                          Meeting.status === 'pending' ? 'bg-amber-100 text-amber-800' :
                           'bg-gray-100 text-gray-800'
                         }`}>
-                          {appointment.status}
+                          {Meeting.status}
                         </span>
                       </div>
                     </div>
@@ -163,8 +163,8 @@ const OwnerDashboard: React.FC = () => {
         {/* Services Tab */}
         {activeTab === 'services' && <ServicesPage />}
 
-        {/* Appointments Tab */}
-        {activeTab === 'appointments' && <AppointmentsPage />}
+        {/* Meetings Tab */}
+        {activeTab === 'Meetings' && <MeetingsPage />}
       </div>
     </div>
   );

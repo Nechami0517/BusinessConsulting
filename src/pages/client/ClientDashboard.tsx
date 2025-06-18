@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchServices } from '../../store/slices/servicesSlice';
-import { createAppointment } from '../../store/slices/appointmentsSlice';
+import { createMeeting } from '../../store/slices/meetingsSlice';
 import { logoutUser } from '../../store/slices/authSlice';
 import { LogOut, Calendar, Clock, DollarSign, Tag, CheckCircle } from 'lucide-react';
-import type { CreateAppointmentData } from '../../types';
+import type { CreateMeetingData } from '../../types';
 
 const ClientDashboard: React.FC = () => {
   const [showBookingForm, setShowBookingForm] = useState(false);
@@ -19,7 +19,7 @@ const ClientDashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { services, isLoading: servicesLoading } = useAppSelector((state) => state.services);
-  const { isLoading: appointmentsLoading } = useAppSelector((state) => state.appointments);
+  const { isLoading: meetingsLoading } = useAppSelector((state) => state.meetings);
 
   useEffect(() => {
     dispatch(fetchServices());
@@ -38,16 +38,16 @@ const ClientDashboard: React.FC = () => {
   const handleSubmitBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const appointmentData: CreateAppointmentData = {
+    const meetingData: CreateMeetingData = {
       serviceId: selectedService.id,
       date: bookingData.date,
       time: bookingData.time,
       notes: bookingData.notes
     };
 
-    const result = await dispatch(createAppointment(appointmentData));
+    const result = await dispatch(createMeeting(meetingData));
     
-    if (createAppointment.fulfilled.match(result)) {
+    if (createMeeting.fulfilled.match(result)) {
       setBookingSuccess(true);
       
       // Reset form after 3 seconds
@@ -107,7 +107,7 @@ const ClientDashboard: React.FC = () => {
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">{service.name}</h3>
                     <div className="flex items-center text-sm text-gray-600 mb-3">
                       <Tag className="h-4 w-4 mr-1" />
-                      {service.category}
+                      {/* {service.category} */}
                     </div>
                     <p className="text-gray-600 mb-4">{service.description}</p>
                   </div>
@@ -125,10 +125,10 @@ const ClientDashboard: React.FC = () => {
 
                   <button
                     onClick={() => handleBookService(service)}
-                    disabled={appointmentsLoading}
+                    disabled={meetingsLoading}
                     className="w-full py-3 px-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium group-hover:shadow-lg disabled:opacity-50"
                   >
-                    Book Appointment
+                    Book Meeting
                   </button>
                 </div>
               ))}
@@ -145,10 +145,10 @@ const ClientDashboard: React.FC = () => {
                   <CheckCircle className="h-16 w-16 text-emerald-600 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Booking Successful!</h3>
                   <p className="text-gray-600 mb-4">
-                    Your appointment for <strong>{selectedService?.name}</strong> has been submitted.
+                    Your meeting for <strong>{selectedService?.name}</strong> has been submitted.
                   </p>
                   <p className="text-sm text-gray-500">
-                    The business owner will review and confirm your appointment shortly.
+                    The business owner will review and confirm your meeting shortly.
                   </p>
                 </div>
               ) : (
@@ -191,10 +191,10 @@ const ClientDashboard: React.FC = () => {
                     <div className="flex space-x-3 pt-4">
                       <button
                         type="submit"
-                        disabled={appointmentsLoading}
+                        disabled={meetingsLoading}
                         className="flex-1 py-3 px-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
                       >
-                        {appointmentsLoading ? 'Booking...' : 'Book Appointment'}
+                        {meetingsLoading ? 'Booking...' : 'Book Meeting'}
                       </button>
                       <button
                         type="button"
