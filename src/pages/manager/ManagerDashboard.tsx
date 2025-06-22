@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchManagerServices } from '../../store/slices/servicesSlice';
-import { fetchManagerMeetings } from '../../store/slices/meetingsSlice';
+import { fetchServices } from '../../store/slices/servicesSlice';
+import { fetchMeetings } from '../../store/slices/meetingsSlice';
 import { logoutUser } from '../../store/slices/authSlice';
 import { LogOut, BarChart3, Calendar, Settings, Users } from 'lucide-react';
 import ServicesPage from './ServicesPage';
-import MeetingsPage from './MeetingPage';
+import MeetingsPage from './MeetingsPage';
 
 const ManagerDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'meetings'>('overview');
@@ -16,8 +16,8 @@ const ManagerDashboard: React.FC = () => {
   const { meetings } = useAppSelector((state) => state.meetings);
 
   useEffect(() => {
-    dispatch(fetchManagerServices());
-    dispatch(fetchManagerMeetings());
+    dispatch(fetchServices());
+    dispatch(fetchMeetings());
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -33,13 +33,13 @@ const ManagerDashboard: React.FC = () => {
     },
     {
       name: 'Active Meetings',
-      value: meetings.filter(apt => apt.status !== 'cancelled').length,
+      value: meetings.filter(apt => apt.status === 'booked').length,
       icon: Calendar,
       color: 'bg-emerald-500'
     },
     {
       name: 'Pending Approvals',
-      value: meetings.filter(apt => apt === 'pending').length,
+      value: meetings.filter(apt => apt.status === 'available').length,
       icon: Users,
       color: 'bg-amber-500'
     },

@@ -1,192 +1,6 @@
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { meetingsAPI } from '../../services/api';
-// import type { MeetingState, CreateMeetingData, UpdateMeetingData } from '../../types';
-
-// const initialState: MeetingState = {
-//   meetings: [],
-//   isLoading: false,
-//   error: null,
-// };
-
-// // Async thunks
-// export const fetchMeetings = createAsyncThunk(
-//   'meetings/fetchMeetings',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const meetings = await meetingsAPI.getMeetings();
-//       return meetings;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to fetch meetings');
-//     }
-//   }
-// );
-
-// export const fetchManagerMeetings = createAsyncThunk(
-//   'meetings/fetchManagerMeetings',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const meetings = await meetingsAPI.getManagerMeetings();
-//       return meetings;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to fetch manager meetings');
-//     }
-//   }
-// );
-
-// export const fetchClientMeetings = createAsyncThunk(
-//   'meetings/fetchClientMeetings',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const meetings = await meetingsAPI.getClientMeetings();
-//       return meetings;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to fetch client meetings');
-//     }
-//   }
-// );
-
-// export const createMeeting = createAsyncThunk(
-//   'meetings/createMeeting',
-//   async (data: CreateMeetingData, { rejectWithValue }) => {
-//     try {
-//       const meeting = await meetingsAPI.createMeeting(data);
-//       return meeting;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to create meeting');
-//     }
-//   }
-// );
-
-// export const updateMeeting = createAsyncThunk(
-//   'meetings/updateMeeting',
-//   async ({ id, data }: { id: string; data: UpdateMeetingData }, { rejectWithValue }) => {
-//     try {
-//       const meeting = await meetingsAPI.updateMeeting(id, data);
-//       return meeting;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to update meeting');
-//     }
-//   }
-// );
-
-// export const deleteMeeting = createAsyncThunk(
-//   'meetings/deleteMeeting',
-//   async (id: string, { rejectWithValue }) => {
-//     try {
-//       await meetingsAPI.deleteMeeting(id);
-//       return id;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || 'Failed to delete meeting');
-//     }
-//   }
-// );
-
-// const meetingsSlice = createSlice({
-//   name: 'meetings',
-//   initialState,
-//   reducers: {
-//     clearMeetingsError: (state) => {
-//       state.error = null;
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       // Fetch meetings
-//       .addCase(fetchMeetings.pending, (state) => {
-//         state.isLoading = true;
-//         state.error = null;
-//       })
-//       .addCase(fetchMeetings.fulfilled, (state, action) => {
-//         state.isLoading = false;
-//         state.meetings = action.payload;
-//         state.error = null;
-//       })
-//       .addCase(fetchMeetings.rejected, (state, action) => {
-//         state.isLoading = false;
-//         state.error = action.payload as string;
-//       })
-//       // Fetch manager meetings
-//       .addCase(fetchManagerMeetings.pending, (state) => {
-//         state.isLoading = true;
-//         state.error = null;
-//       })
-//       .addCase(fetchManagerMeetings.fulfilled, (state, action) => {
-//         state.isLoading = false;
-//         state.meetings = action.payload;
-//         state.error = null;
-//       })
-//       .addCase(fetchManagerMeetings.rejected, (state, action) => {
-//         state.isLoading = false;
-//         state.error = action.payload as string;
-//       })
-//       // Fetch client meetings
-//       .addCase(fetchClientMeetings.pending, (state) => {
-//         state.isLoading = true;
-//         state.error = null;
-//       })
-//       .addCase(fetchClientMeetings.fulfilled, (state, action) => {
-//         state.isLoading = false;
-//         state.meetings = action.payload;
-//         state.error = null;
-//       })
-//       .addCase(fetchClientMeetings.rejected, (state, action) => {
-//         state.isLoading = false;
-//         state.error = action.payload as string;
-//       })
-//       // Create meeting
-//       .addCase(createMeeting.pending, (state) => {
-//         state.isLoading = true;
-//         state.error = null;
-//       })
-//       .addCase(createMeeting.fulfilled, (state, action) => {
-//         state.isLoading = false;
-//         state.meetings.push(action.payload);
-//         state.error = null;
-//       })
-//       .addCase(createMeeting.rejected, (state, action) => {
-//         state.isLoading = false;
-//         state.error = action.payload as string;
-//       })
-//       // Update meeting
-//       .addCase(updateMeeting.pending, (state) => {
-//         state.isLoading = true;
-//         state.error = null;
-//       })
-//       .addCase(updateMeeting.fulfilled, (state, action) => {
-//         state.isLoading = false;
-//         const index = state.meetings.findIndex(meeting => meeting.id === action.payload.id);
-//         if (index !== -1) {
-//           state.meetings[index] = action.payload;
-//         }
-//         state.error = null;
-//       })
-//       .addCase(updateMeeting.rejected, (state, action) => {
-//         state.isLoading = false;
-//         state.error = action.payload as string;
-//       })
-//       // Delete meeting
-//       .addCase(deleteMeeting.pending, (state) => {
-//         state.isLoading = true;
-//         state.error = null;
-//       })
-//       .addCase(deleteMeeting.fulfilled, (state, action) => {
-//         state.isLoading = false;
-//         state.meetings = state.meetings.filter(meeting => meeting.id !== action.payload);
-//         state.error = null;
-//       })
-//       .addCase(deleteMeeting.rejected, (state, action) => {
-//         state.isLoading = false;
-//         state.error = action.payload as string;
-//       });
-//   },
-// });
-
-// export const { clearMeetingsError } = meetingsSlice.actions;
-// export default meetingsSlice.reducer;
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { meetingsAPI } from '../../services/api';
-import type { MeetingState, CreateMeetingData, UpdateMeetingData, Meeting } from '../../types';
+import type { MeetingState, CreateMeetingData, UpdateMeetingData, MeetingTimeSlot } from '../../types';
 
 const initialState: MeetingState = {
   meetings: [],
@@ -195,11 +9,11 @@ const initialState: MeetingState = {
 };
 
 // Async thunks
-export const fetchMeetings = createAsyncThunk<Meeting[], void>(
+export const fetchMeetings = createAsyncThunk<MeetingTimeSlot[], void>(
   'meetings/fetchMeetings',
   async (_, { rejectWithValue }) => {
     try {
-      const meetings = await meetingsAPI.getMeetings();
+      const meetings = await meetingsAPI.getMeetingTimeSlots();
       return meetings;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch meetings');
@@ -207,23 +21,13 @@ export const fetchMeetings = createAsyncThunk<Meeting[], void>(
   }
 );
 
-export const fetchManagerMeetings = createAsyncThunk<Meeting[], void>(
-  'meetings/fetchManagerMeetings',
-  async (_, { rejectWithValue }) => {
-    try {
-      const meetings = await meetingsAPI.getManagerMeetings();
-      return meetings;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch manager meetings');
-    }
-  }
-);
 
-export const fetchClientMeetings = createAsyncThunk<Meeting[], void>(
+
+export const fetchClientMeetings = createAsyncThunk<MeetingTimeSlot[], void>(
   'meetings/fetchClientMeetings',
   async (_, { rejectWithValue }) => {
     try {
-      const meetings = await meetingsAPI.getClientMeetings();
+      const meetings = await meetingsAPI.getClientMeetingTimeSlots();
       return meetings;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch client meetings');
@@ -231,11 +35,11 @@ export const fetchClientMeetings = createAsyncThunk<Meeting[], void>(
   }
 );
 
-export const createMeeting = createAsyncThunk<Meeting, CreateMeetingData>(
+export const createMeeting = createAsyncThunk<MeetingTimeSlot, CreateMeetingData>(
   'meetings/createMeeting',
   async (data, { rejectWithValue }) => {
     try {
-      const meeting = await meetingsAPI.createMeeting(data);
+      const meeting = await meetingsAPI.createMeetingTimeSlot(data);
       return meeting;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to create meeting');
@@ -243,11 +47,11 @@ export const createMeeting = createAsyncThunk<Meeting, CreateMeetingData>(
   }
 );
 
-export const updateMeeting = createAsyncThunk<Meeting, { id: string; data: UpdateMeetingData }>(
+export const updateMeeting = createAsyncThunk<MeetingTimeSlot, { id: string; data: UpdateMeetingData }>(
   'meetings/updateMeeting',
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const meeting = await meetingsAPI.updateMeeting(id, data);
+      const meeting = await meetingsAPI.updateMeetingTimeSlot(id, data);
       return meeting;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to update meeting');
@@ -259,7 +63,7 @@ export const deleteMeeting = createAsyncThunk<string, string>(
   'meetings/deleteMeeting',
   async (id, { rejectWithValue }) => {
     try {
-      await meetingsAPI.deleteMeeting(id);
+      await meetingsAPI.deleteMeetingTimeSlot(id);
       return id;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to delete meeting');
@@ -291,20 +95,8 @@ const meetingsSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       })
-      // Fetch manager meetings
-      .addCase(fetchManagerMeetings.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(fetchManagerMeetings.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.meetings = action.payload;
-        state.error = null;
-      })
-      .addCase(fetchManagerMeetings.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string;
-      })
+    
+      
       // Fetch client meetings
       .addCase(fetchClientMeetings.pending, (state) => {
         state.isLoading = true;

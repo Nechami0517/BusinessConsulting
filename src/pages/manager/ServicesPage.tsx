@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { createService, updateService, deleteService } from '../../store/slices/servicesSlice';
+import { createService, updateService, deleteService, fetchServices } from '../../store/slices/servicesSlice';
 import { Plus, Edit2, Trash2, DollarSign, Clock, Tag } from 'lucide-react';
 import type { CreateServiceData } from '../../types';
 
 const ServicesPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [editingService, setEditingService] = useState<string | null>(null);
+  const [editingService, setEditingService] = useState<number | -1>(-1);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
     duration: '',
-    category: ''
+    //category: ''
   });
 
   const dispatch = useAppDispatch();
@@ -26,17 +26,17 @@ const ServicesPage: React.FC = () => {
       description: formData.description,
       price: parseFloat(formData.price),
       duration: parseInt(formData.duration),
-      category: formData.category
+      //category: formData.category
     };
 
     if (editingService) {
       dispatch(updateService({ id: editingService, data: serviceData }));
-      setEditingService(null);
+      setEditingService(-1);
     } else {
       dispatch(createService(serviceData));
     }
 
-    setFormData({ name: '', description: '', price: '', duration: '', category: '' });
+    setFormData({ name: '', description: '', price: '', duration: ''});
     setShowForm(false);
   };
 
@@ -46,7 +46,7 @@ const ServicesPage: React.FC = () => {
       description: service.description,
       price: service.price.toString(),
       duration: service.duration.toString(),
-      category: service.category
+     // category: service.category
     });
     setEditingService(service.id);
     setShowForm(true);
@@ -59,8 +59,8 @@ const ServicesPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    setFormData({ name: '', description: '', price: '', duration: '', category: '' });
-    setEditingService(null);
+    setFormData({ name: '', description: '', price: '', duration: '' });
+    setEditingService(-1);
     setShowForm(false);
   };
 
@@ -104,17 +104,7 @@ const ServicesPage: React.FC = () => {
                   placeholder="Enter service name"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="e.g., Strategy, Marketing"
-                />
-              </div>
+              
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>

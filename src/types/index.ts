@@ -82,17 +82,18 @@ export interface BusinessDetail {
 
 
 export interface User {
+  id: number;
   name: string;
   phone?: string;
   email: string;
   role: 'manager'; 
 }
 
-export interface Meeting {
-  id: number;
-  user_id: number; // ID של הלקוח
-  service_id: number; // ID של השירות
-}
+// export interface Meeting {
+//   id: number;
+//   user_id: number; // ID של הלקוח
+//   service_id: number; // ID של השירות
+// }
 
 export interface MeetingTimeSlot {
   id: number;
@@ -125,7 +126,7 @@ export interface ServicesState {
 }
 
 export interface MeetingState {
-  meetings: Meeting[]; // או MeetingTimeSlot תלוי מה אתה צריך
+  meetings: MeetingTimeSlot[]; // או MeetingTimeSlot תלוי מה אתה צריך
   isLoading: boolean;
   error: string | null;
 }
@@ -159,7 +160,7 @@ export interface CreateServiceData {
   description: string;
   price: number;
   duration: number;
-  category: string;
+  //category: string;
 }
 
 export interface UpdateServiceData extends Partial<CreateServiceData> {
