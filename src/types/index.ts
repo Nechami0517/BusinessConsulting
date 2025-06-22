@@ -88,6 +88,7 @@ export interface UpdateMeetingData {
 }
 
 export interface CreateServiceData {
+   id:number,
   name: string;
   description: string;
   price: number;

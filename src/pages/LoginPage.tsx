@@ -143,49 +143,7 @@ const LoginPage: React.FC = () => {
                 </button>
               </div>
               </div>
-              {registering && (
-                <>
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Name
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full pl-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
-                      placeholder="Enter your name"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="phone"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Phone
-                    </label>
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full pl-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
-                      placeholder="Enter your phone number"
-                    />
-                  </div>
-                </>
-              )}
-
-             
+           
             </div>
             {registering && (
               <div>
