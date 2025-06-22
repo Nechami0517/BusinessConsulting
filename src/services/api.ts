@@ -9,6 +9,7 @@ import type {
   UpdateServiceData,
   CreateMeetingData,
   UpdateMeetingData,
+  MeetingTimeSlot,
 } from '../types';
 
 const API_BASE_URL = import.meta.env.API_BASE_URL || 'http://localhost:3000';
@@ -91,7 +92,7 @@ export const servicesAPI = {
     return response.data;
   },
 
-  updateService: async (id: string, data: UpdateServiceData): Promise<Service> => {
+  updateService: async (id: number, data: UpdateServiceData): Promise<Service> => {
     const response = await api.put(`/services/${id}`, data);
     return response.data;
   },
@@ -108,37 +109,37 @@ export const servicesAPI = {
 
 // Meetings API
 export const meetingsAPI = {
-  getMeetings: async (): Promise<Meeting[]> => {
-    const response = await api.get('/meetings');
+  getMeetings: async (): Promise<MeetingTimeSlot[]> => {
+    const response = await api.get('/services');
     return response.data;
   },
 
   getMeetingById: async (id: string): Promise<Meeting> => {
-    const response = await api.get(`/meetings/${id}`);
+    const response = await api.get(`/services/${id}`);
     return response.data;
   },
 
   createMeeting: async (data: CreateMeetingData): Promise<Meeting> => {
-    const response = await api.post('/meetings', data);
+    const response = await api.post('/services', data);
     return response.data;
   },
 
   updateMeeting: async (id: string, data: UpdateMeetingData): Promise<Meeting> => {
-    const response = await api.put(`/meetings/${id}`, data);
+    const response = await api.put(`/services/${id}`, data);
     return response.data;
   },
 
   deleteMeeting: async (id: string): Promise<void> => {
-    await api.delete(`/meetings/${id}`);
+    await api.delete(`/services/${id}`);
   },
 
   getManagerMeetings: async (): Promise<Meeting[]> => {
-    const response = await api.get('/meetings/manager');
+    const response = await api.get('/services/manager');
     return response.data;
   },
 
   getClientMeetings: async (): Promise<Meeting[]> => {
-    const response = await api.get('/meetings/client');
+    const response = await api.get('/services/client');
     return response.data;
   },
 };

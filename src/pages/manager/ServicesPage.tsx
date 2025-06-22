@@ -1,42 +1,47 @@
-import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { createService, updateService, deleteService } from '../../store/slices/servicesSlice';
-import { Plus, Edit2, Trash2, DollarSign, Clock, Tag } from 'lucide-react';
-import type { CreateServiceData } from '../../types';
+import React, { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+  createService,
+  updateService,
+  deleteService,
+} from "../../store/slices/servicesSlice";
+import { Plus, Edit2, Trash2, DollarSign, Clock, Tag } from "lucide-react";
+import type { CreateServiceData } from "../../types";
 
 const ServicesPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [editingService, setEditingService] = useState<string | null>(null);
+  const [editingService, setEditingService] = useState<number | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    duration: '',
-    category: ''
+    name: "",
+    description: "",
+    price: "",
+    duration: "",
   });
 
   const dispatch = useAppDispatch();
-  const { services, isLoading, error } = useAppSelector((state) => state.services);
+  const { services, isLoading, error } = useAppSelector(
+    (state) => state.services
+  );
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const serviceData: CreateServiceData = {
       name: formData.name,
       description: formData.description,
       price: parseFloat(formData.price),
       duration: parseInt(formData.duration),
-      category: formData.category
     };
 
     if (editingService) {
       dispatch(updateService({ id: editingService, data: serviceData }));
-      setEditingService(null);
+      setEditingService(-1);
     } else {
       dispatch(createService(serviceData));
     }
 
-    setFormData({ name: '', description: '', price: '', duration: '', category: '' });
+    setFormData({ name: "", description: "", price: "", duration: "" });
     setShowForm(false);
   };
 
@@ -46,21 +51,20 @@ const ServicesPage: React.FC = () => {
       description: service.description,
       price: service.price.toString(),
       duration: service.duration.toString(),
-      category: service.category
     });
     setEditingService(service.id);
     setShowForm(true);
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this service?')) {
+    if (window.confirm("Are you sure you want to delete this service?")) {
       dispatch(deleteService(id));
     }
   };
 
   const handleCancel = () => {
-    setFormData({ name: '', description: '', price: '', duration: '', category: '' });
-    setEditingService(null);
+    setFormData({ name: "", description: "", price: "", duration: "" });
+    setEditingService(-1);
     setShowForm(false);
   };
 
@@ -89,22 +93,26 @@ const ServicesPage: React.FC = () => {
       {showForm && (
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl">
           <h3 className="text-lg font-semibold mb-4">
-            {editingService ? 'Edit Service' : 'Add New Service'}
+            {editingService ? "Edit Service" : "Add New Service"}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Service Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Service Name
+                </label>
                 <input
                   type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Enter service name"
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                 <input
                   type="text"
@@ -114,14 +122,18 @@ const ServicesPage: React.FC = () => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="e.g., Strategy, Marketing"
                 />
-              </div>
+              </div> */}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
               <textarea
                 required
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 rows={3}
                 placeholder="Describe your service"
@@ -129,24 +141,32 @@ const ServicesPage: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Price ($)
+                </label>
                 <input
                   type="number"
                   required
                   step="0.01"
                   value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, price: e.target.value })
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="0.00"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Duration (minutes)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Duration (minutes)
+                </label>
                 <input
                   type="number"
                   required
                   value={formData.duration}
-                  onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, duration: e.target.value })
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="60"
                 />
@@ -158,7 +178,7 @@ const ServicesPage: React.FC = () => {
                 disabled={isLoading}
                 className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
               >
-                {editingService ? 'Update Service' : 'Add Service'}
+                {editingService ? "Update Service" : "Add Service"}
               </button>
               <button
                 type="button"
@@ -175,10 +195,15 @@ const ServicesPage: React.FC = () => {
       {/* Services Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service) => (
-          <div key={service.id} className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:shadow-xl transition-all duration-200">
+          <div
+            key={service.id}
+            className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:shadow-xl transition-all duration-200"
+          >
             <div className="flex justify-between items-start mb-4">
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{service.name}</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {service.name}
+                </h3>
                 <div className="flex items-center text-sm text-gray-600 mb-2">
                   <Tag className="h-4 w-4 mr-1" />
                   {/* {service.category} */}
@@ -201,9 +226,11 @@ const ServicesPage: React.FC = () => {
                 </button>
               </div>
             </div>
-            
-            <p className="text-gray-600 mb-4 line-clamp-3">{service.description}</p>
-            
+
+            <p className="text-gray-600 mb-4 line-clamp-3">
+              {service.description}
+            </p>
+
             <div className="flex justify-between items-center pt-4 border-t border-gray-200">
               <div className="flex items-center text-emerald-600 font-semibold">
                 <DollarSign className="h-4 w-4 mr-1" />

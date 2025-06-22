@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchManagerServices } from '../../store/slices/servicesSlice';
+import { fetchServices } from '../../store/slices/servicesSlice';
 import { fetchManagerMeetings } from '../../store/slices/meetingsSlice';
 import { logoutUser } from '../../store/slices/authSlice';
 import { LogOut, BarChart3, Calendar, Settings, Users } from 'lucide-react';
 import ServicesPage from './ServicesPage';
-import MeetingsPage from './MeetingPage';
+import MeetingsPage from './MeetingsPage';
 
 const ManagerDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'meetings'>('overview');
@@ -16,7 +16,7 @@ const ManagerDashboard: React.FC = () => {
   const { meetings } = useAppSelector((state) => state.meetings);
 
   useEffect(() => {
-    dispatch(fetchManagerServices());
+    dispatch(fetchServices());
     dispatch(fetchManagerMeetings());
   }, [dispatch]);
 

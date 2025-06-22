@@ -16,8 +16,9 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await authAPI.login(credentials);
       localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      return response;
+      const user = await authAPI.getProfile();
+      localStorage.setItem('user', JSON.stringify(user));
+      return {response:response, user};
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
     }
@@ -27,11 +28,12 @@ export const loginUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   '/register',
   async (data: RegisterData, { rejectWithValue }) => {
-    try {
+    try { 
       const response = await authAPI.register(data);
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      return response;
+      localStorage.setItem('token', response.token);     
+      const user = await authAPI.getProfile();
+      localStorage.setItem('user', JSON.stringify(user));
+      return {token:response.token, user};
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Registration failed');
     }
@@ -44,8 +46,9 @@ export const loginWithGoogle = createAsyncThunk(
     try {
       const response = await authAPI.loginWithGoogle(googleToken);
       localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      return response;
+      const user = await authAPI.getProfile();
+      localStorage.setItem('user', JSON.stringify(user));
+      return {token:response.token, user};
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Google login failed');
     }
@@ -58,8 +61,9 @@ export const refreshToken = createAsyncThunk(
     try {
       const response = await authAPI.refreshToken();
       localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      return response;
+      const user = await authAPI.getProfile();
+      localStorage.setItem('user', JSON.stringify(user));
+      return {token:response.token, user};
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Token refresh failed');
     }

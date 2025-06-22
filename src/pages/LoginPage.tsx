@@ -39,28 +39,11 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    dispatch(loginUser({ email, password }));
+    await dispatch(loginUser({ email, password }));
   };
 
-  // const handleRegister = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   // אם המשתמש כבר לחץ על כפתור ההרשמה
-  //   if (registering) {
-  //     // ודא שכל השדות מלאים
-  //     if (!name || !email || !password || !phone) {
-  //       return;
-  //     }
-
-  //     // שלח את הקריאה לשרת כדי ליצור לקוח
-  //     setRegistering(true);
-  //     await dispatch(registerUser({ name, phone, email, password }));
-  //     setRegistering(false);
-  //   } else {
-  //     // אם לא, הפעל את מצב ההרשמה
-  //     setRegistering(true);
-  //   }
-  // };
+ 
+  
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
   
