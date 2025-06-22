@@ -13,7 +13,7 @@ export const fetchMeetings = createAsyncThunk<MeetingTimeSlot[], void>(
   'meetings/fetchMeetings',
   async (_, { rejectWithValue }) => {
     try {
-      const meetings = await meetingsAPI.getMeetingTimeSlots();
+      const meetings = await meetingsAPI.getMeetings();
       return meetings;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch meetings');
@@ -27,7 +27,7 @@ export const fetchClientMeetings = createAsyncThunk<MeetingTimeSlot[], void>(
   'meetings/fetchClientMeetings',
   async (_, { rejectWithValue }) => {
     try {
-      const meetings = await meetingsAPI.getClientMeetingTimeSlots();
+      const meetings = await meetingsAPI.getClientMeetings();
       return meetings;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch client meetings');
@@ -39,7 +39,7 @@ export const createMeeting = createAsyncThunk<MeetingTimeSlot, CreateMeetingData
   'meetings/createMeeting',
   async (data, { rejectWithValue }) => {
     try {
-      const meeting = await meetingsAPI.createMeetingTimeSlot(data);
+      const meeting = await meetingsAPI.createMeeting(data);
       return meeting;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to create meeting');
@@ -51,7 +51,7 @@ export const updateMeeting = createAsyncThunk<MeetingTimeSlot, { id: string; dat
   'meetings/updateMeeting',
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const meeting = await meetingsAPI.updateMeetingTimeSlot(id, data);
+      const meeting = await meetingsAPI.updateMeeting(id, data);
       return meeting;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to update meeting');
@@ -63,7 +63,7 @@ export const deleteMeeting = createAsyncThunk<string, string>(
   'meetings/deleteMeeting',
   async (id, { rejectWithValue }) => {
     try {
-      await meetingsAPI.deleteMeetingTimeSlot(id);
+      await meetingsAPI.deleteMeeting(id);
       return id;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to delete meeting');

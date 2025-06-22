@@ -18,7 +18,7 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem('token', response.token);
       const user = await authAPI.getProfile();
       localStorage.setItem('user', JSON.stringify(user));
-      return {token:response.token,user};
+      return {response:response, user};
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
     }
@@ -28,12 +28,12 @@ export const loginUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   '/register',
   async (data: RegisterData, { rejectWithValue }) => {
-    try {
+    try { 
       const response = await authAPI.register(data);
-      localStorage.setItem('token', response.token);
+      localStorage.setItem('token', response.token);     
       const user = await authAPI.getProfile();
       localStorage.setItem('user', JSON.stringify(user));
-      return {token:response.token,user};
+      return {token:response.token, user};
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Registration failed');
     }
@@ -48,7 +48,7 @@ export const loginWithGoogle = createAsyncThunk(
       localStorage.setItem('token', response.token);
       const user = await authAPI.getProfile();
       localStorage.setItem('user', JSON.stringify(user));
-      return {token:response.token,user};
+      return {token:response.token, user};
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Google login failed');
     }
@@ -63,7 +63,7 @@ export const refreshToken = createAsyncThunk(
       localStorage.setItem('token', response.token);
       const user = await authAPI.getProfile();
       localStorage.setItem('user', JSON.stringify(user));
-      return response;
+      return {token:response.token, user};
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Token refresh failed');
     }
@@ -133,7 +133,7 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.token = action.payload.response.token;
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {

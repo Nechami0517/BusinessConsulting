@@ -1,75 +1,5 @@
-// export interface User {
-//   id: string;
-//   email: string;
-//   name: string;
-//   role: 'manager' | 'client';
-//   avatar?: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }
 
-// export interface Service {
-//   id: string;
-//   name: string;
-//   description: string;
-//   price: number;
-//   duration: number; // in minutes
-//   category: string;
-//   isActive: boolean;
-//   managerId: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }
-
-// export interface Meeting {
-//   id: string;
-//   serviceId: string;
-//   clientId: string;
-//   managerId: string;
-//   clientName: string;
-//   clientEmail: string;
-//   date: string;
-//   time: string;
-//   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-//   notes?: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }
-
-// export interface AuthState {
-//   user: User | null;
-//   token: string | null;
-//   isLoading: boolean;
-//   error: string | null;
-// }
-
-// export interface ServicesState {
-//   services: Service[];
-//   isLoading: boolean;
-//   error: string | null;
-// }
-
-// export interface MeetingsState {
-//   meetings: Meeting[];
-//   isLoading: boolean;
-//   error: string | null;
-// }
-
-// export interface LoginCredentials {
-//   email: string;
-//   password: string;
-// }
-
-// export interface RegisterData {
-//   email: string;
-//   password: string;
-//   name: string;
-//   role: 'manager' | 'client';
-// }
-
-
-
-
+// פרטי העסק
 export interface BusinessDetail {
   id: number;
   name: string;
@@ -80,7 +10,7 @@ export interface BusinessDetail {
   description?: string;
 }
 
-
+// 
 export interface User {
   id: number;
   name: string;
@@ -155,12 +85,13 @@ export interface UpdateMeetingData {
   time?: string;
   notes?: string;
 }
+
 export interface CreateServiceData {
   name: string;
   description: string;
   price: number;
   duration: number;
-  //category: string;
+  // category: string;
 }
 
 export interface UpdateServiceData extends Partial<CreateServiceData> {

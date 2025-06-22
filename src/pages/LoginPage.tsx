@@ -39,28 +39,11 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    dispatch(loginUser({ email, password }));
+    await dispatch(loginUser({ email, password }));
   };
 
-  // const handleRegister = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   // אם המשתמש כבר לחץ על כפתור ההרשמה
-  //   if (registering) {
-  //     // ודא שכל השדות מלאים
-  //     if (!name || !email || !password || !phone) {
-  //       return;
-  //     }
-
-  //     // שלח את הקריאה לשרת כדי ליצור לקוח
-  //     setRegistering(true);
-  //     await dispatch(registerUser({ name, phone, email, password }));
-  //     setRegistering(false);
-  //   } else {
-  //     // אם לא, הפעל את מצב ההרשמה
-  //     setRegistering(true);
-  //   }
-  // };
+ 
+  
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
   
@@ -204,6 +187,47 @@ const LoginPage: React.FC = () => {
 
              
             </div>
+            {registering && (
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full pl-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
+                  placeholder="Enter your name"
+                />
+              </div>
+            )}
+
+            {registering && (
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Phone
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full pl-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+            )}
 
             {error && (
               <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg border border-red-200">
