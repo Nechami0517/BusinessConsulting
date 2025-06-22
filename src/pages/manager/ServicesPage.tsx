@@ -36,7 +36,7 @@ const ServicesPage: React.FC = () => {
       duration: parseInt(formData.duration),
     };
 
-    if (editingService) {
+    if (editingService!=-1) {
       dispatch(updateService({ id: editingService, data: serviceData }));
       setEditingService(-1);
     } else {
@@ -93,10 +93,10 @@ const ServicesPage: React.FC = () => {
       )}
 
       {/* Service Form */}
-      {showForm && (
+      {showForm && ( 
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl">
           <h3 className="text-lg font-semibold mb-4">
-            {editingService ? "Edit Service" : "Add New Service"}
+            {editingService !=-1 ? "Edit Service" : "Add New Service"}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -181,7 +181,7 @@ const ServicesPage: React.FC = () => {
                 disabled={isLoading}
                 className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
               >
-                {editingService ? "Update Service" : "Add Service"}
+                {editingService === -1 ? "Add Service" : "Update Service"}
               </button>
               <button
                 type="button"
