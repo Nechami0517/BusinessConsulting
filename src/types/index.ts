@@ -26,6 +26,7 @@ export interface Meeting {
     date: string; 
     start_time: string; 
     end_time: string; 
+    notes?: string;
     status: string;
     service?: {
         name: string; 
@@ -38,7 +39,7 @@ export interface Meeting {
 
 
 export interface Service {
-  id: number;
+  id: number| undefined;
   name: string;
   description?: string;
   duration: number; // משך בשעות

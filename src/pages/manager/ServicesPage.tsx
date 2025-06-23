@@ -43,14 +43,14 @@ const ServicesPage: React.FC = () => {
       dispatch(createService(serviceData));
     }
 
-    setFormData({ id:editingService, name: "", description: "", price: "", duration: "", });
+    setFormData({ id:undefined, name: "", description: "", price: "", duration: "", });
     setEditingService(undefined)
     setShowForm(false);
   };
 
   const handleEdit = (service: any) => {
     setFormData({
-       id:editingService,
+      id:editingService,
       name: service.name,
       description: service.description,
       price: service.price.toString(),
@@ -67,7 +67,7 @@ const ServicesPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    setFormData({  id:editingService,name: "", description: "", price: "", duration: "" });
+    setFormData({  id:undefined,name: "", description: "", price: "", duration: "" });
     setEditingService(-1);
     setShowForm(false);
   };
