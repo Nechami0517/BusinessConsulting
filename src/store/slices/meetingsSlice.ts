@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { meetingsAPI } from '../../services/api';
-import type { MeetingState, CreateMeetingData, UpdateMeetingData, MeetingTimeSlot } from '../../types';
+import type { MeetingState, CreateMeetingData, UpdateMeetingData, Meeting } from '../../types';
 
 const initialState: MeetingState = {
-  meetings: [] as MeetingTimeSlot[],
+  meetings: [] as Meeting[],
   isLoading: false,
   error: null,
 };
 
 // Async thunks
-export const fetchMeetings = createAsyncThunk<MeetingTimeSlot[], void>(
+export const fetchMeetings = createAsyncThunk<Meeting[], void>(
   'meetings/fetchMeetings',
   async (_, { rejectWithValue }) => {
     try {
@@ -23,7 +23,7 @@ export const fetchMeetings = createAsyncThunk<MeetingTimeSlot[], void>(
 
 
 
-export const fetchClientMeetings = createAsyncThunk<MeetingTimeSlot[], void>(
+export const fetchClientMeetings = createAsyncThunk<Meeting[], void>(
   'meetings/fetchClientMeetings',
   async (_, { rejectWithValue }) => {
     try {
@@ -35,7 +35,7 @@ export const fetchClientMeetings = createAsyncThunk<MeetingTimeSlot[], void>(
   }
 );
 
-export const createMeeting = createAsyncThunk<MeetingTimeSlot, CreateMeetingData>(
+export const createMeeting = createAsyncThunk<Meeting, CreateMeetingData>(
   'meetings/createMeeting',
   async (data, { rejectWithValue }) => {
     try {
@@ -47,7 +47,7 @@ export const createMeeting = createAsyncThunk<MeetingTimeSlot, CreateMeetingData
   }
 );
 
-export const updateMeeting = createAsyncThunk<MeetingTimeSlot, { id: string; data: UpdateMeetingData }>(
+export const updateMeeting = createAsyncThunk<Meeting, { id: string; data: UpdateMeetingData }>(
   'meetings/updateMeeting',
   async ({ id, data }, { rejectWithValue }) => {
     try {

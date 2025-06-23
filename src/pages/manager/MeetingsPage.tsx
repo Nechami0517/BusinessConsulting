@@ -60,8 +60,8 @@ const MeetingsPage: React.FC = () => {
       {/* Meetings List */}
       <div className="space-y-4">
         {meetings.map((meeting) => {
-          const service = services.find(s => s.id === meeting.serviceId);
-          const client = meetings.find(client => client.id === meeting.);
+          const service = services.find(s => s.id === meeting.service_id);
+          // const client = meetings.find(client => client.id === meeting.);
           return (
             <div key={meeting.id} className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:shadow-xl transition-all duration-200">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
@@ -80,15 +80,15 @@ const MeetingsPage: React.FC = () => {
                     <div className="flex items-center">
                       <User className="h-4 w-4 mr-2" />
                       <div>
-                        <p className="font-medium text-gray-900">{meeting.clientName}</p>
-                        <p>{meeting.clientEmail}</p>
+                        <p className="font-medium text-gray-900">{meeting.client?.name}</p>
+                        <p>{meeting.client?.email}</p>
                       </div>
                     </div>
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
                       <div>
                         <p className="font-medium text-gray-900">{meeting.date}</p>
-                        <p>{meeting.time}</p>
+                        <p>{meeting.start_time}</p>
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -113,14 +113,14 @@ const MeetingsPage: React.FC = () => {
                   {meeting.status === 'pending' && (
                     <>
                       <button
-                        onClick={() => handleStatusChange(meeting.id, 'confirmed')}
+                        onClick={() => handleStatusChange(meeting.id.toString(), 'confirmed')}
                         disabled={isLoading}
                         className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium disabled:opacity-50"
                       >
                         Confirm
                       </button>
                       <button
-                        onClick={() => handleStatusChange(meeting.id, 'cancelled')}
+                        onClick={() => handleStatusChange(meeting.id.toString(), 'cancelled')}
                         disabled={isLoading}
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium disabled:opacity-50"
                       >
@@ -131,14 +131,14 @@ const MeetingsPage: React.FC = () => {
                   {meeting.status === 'confirmed' && (
                     <>
                       <button
-                        onClick={() => handleStatusChange(meeting.id, 'completed')}
+                        onClick={() => handleStatusChange(meeting.id.toString(), 'completed')}
                         disabled={isLoading}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50"
                       >
                         Mark Complete
                       </button>
                       <button
-                        onClick={() => handleStatusChange(meeting.id, 'cancelled')}
+                        onClick={() => handleStatusChange(meeting.id.toString(), 'cancelled')}
                         disabled={isLoading}
                         className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium disabled:opacity-50"
                       >
