@@ -10,9 +10,9 @@ import type { CreateServiceData } from "../../types";
 
 const ServicesPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [editingService, setEditingService] = useState<number>(-1);
+  const [editingService, setEditingService] = useState<number|undefined>(undefined);
   const [formData, setFormData] = useState({
-    id:-1,
+    id:number|undefined,
     name: "",
     description: "",
     price: "",
@@ -36,14 +36,15 @@ const ServicesPage: React.FC = () => {
       duration: parseInt(formData.duration),
     };
 
-    if (editingService!=-1) {
+    if (editingService) {
       dispatch(updateService({ id: editingService, data: serviceData }));
-      setEditingService(-1);
+      setEditingService(undefined);
     } else {
       dispatch(createService(serviceData));
     }
 
-    setFormData({ id:editingService,name: "", description: "", price: "", duration: "", });
+    setFormData({ id:editingService, name: "", description: "", price: "", duration: "", });
+    setEditingService(undefined)
     setShowForm(false);
   };
 
