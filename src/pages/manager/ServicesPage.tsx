@@ -10,8 +10,9 @@ import type { CreateServiceData } from "../../types";
 
 const ServicesPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [editingService, setEditingService] = useState<number | null>(null);
+  const [editingService, setEditingService] = useState<number | undefined>(undefined);
   const [formData, setFormData] = useState({
+    id: undefined,
     name: "",
     description: "",
     price: "",
@@ -23,30 +24,39 @@ const ServicesPage: React.FC = () => {
     (state) => state.services
   );
 
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const serviceData: CreateServiceData = {
+      id: formData.id,
       name: formData.name,
       description: formData.description,
       price: parseFloat(formData.price),
       duration: parseInt(formData.duration),
     };
 
-    if (editingService) {
-      dispatch(updateService({ id: editingService, data: serviceData }));
-      setEditingService(-1);
+    if (editingService !== undefined) {
+      // עדכון שירות קיים
+      const resultAction = await dispatch(updateService({ id: editingService, data: serviceData }));
+      if (updateService.fulfilled.match(resultAction)) {
+        console.log("Service updated successfully:", resultAction.payload);
+      }
     } else {
-      dispatch(createService(serviceData));
+      // יצירת שירות חדש
+      const resultAction = await dispatch(createService(serviceData));
+      if (createService.fulfilled.match(resultAction)) {
+        console.log("Service created successfully:", resultAction.payload);
+      }
     }
 
-    setFormData({ name: "", description: "", price: "", duration: "" });
+    setFormData({ id: undefined, name: "", description: "", price: "", duration: "" }); // איפוס הנתונים
+    setEditingService(undefined); 
     setShowForm(false);
-  };
+};
 
   const handleEdit = (service: any) => {
     setFormData({
+      id: service.id,
       name: service.name,
       description: service.description,
       price: service.price.toString(),
@@ -63,8 +73,8 @@ const ServicesPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    setFormData({ name: "", description: "", price: "", duration: "" });
-    setEditingService(-1);
+    setFormData({ id: undefined, name: "", description: "", price: "", duration: "" });
+    setEditingService(undefined);
     setShowForm(false);
   };
 
@@ -112,17 +122,6 @@ const ServicesPage: React.FC = () => {
                   placeholder="Enter service name"
                 />
               </div>
-              {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="e.g., Strategy, Marketing"
-                />
-              </div> */}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -178,7 +177,7 @@ const ServicesPage: React.FC = () => {
                 disabled={isLoading}
                 className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
               >
-                {editingService ? "Update Service" : "Add Service"}
+                {editingService !== undefined ? "Update Service" : "Add Service"}
               </button>
               <button
                 type="button"
@@ -206,7 +205,6 @@ const ServicesPage: React.FC = () => {
                 </h3>
                 <div className="flex items-center text-sm text-gray-600 mb-2">
                   <Tag className="h-4 w-4 mr-1" />
-                  {/* {service.category} */}
                 </div>
               </div>
               <div className="flex space-x-2">

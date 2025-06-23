@@ -87,12 +87,16 @@ export const servicesAPI = {
   },
 
   createService: async (data: CreateServiceData): Promise<Service> => {
+    console.log(data);
+    
     const response = await api.post('/services', data);
+    console.log('Creating service:', response.data);
+    
     return response.data;
   },
 
   updateService: async (id: number, data: UpdateServiceData): Promise<Service> => {
-    const response = await api.put(`/services/${id}`, data);
+    const response = await api.put(`/services/${id}`, { ...data, id });
     return response.data;
   },
 

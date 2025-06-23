@@ -32,6 +32,8 @@ export const createService = createAsyncThunk<Service, CreateServiceData>(
   "services/createService",
   async (data, { rejectWithValue }) => {
     try {
+      console.log(data);
+      
       const service = await servicesAPI.createService(data);
       return service;
     } catch (error: any) {
@@ -41,6 +43,7 @@ export const createService = createAsyncThunk<Service, CreateServiceData>(
     }
   }
 );
+
 
 export const updateService = createAsyncThunk<
   Service,

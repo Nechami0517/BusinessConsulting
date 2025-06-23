@@ -3,7 +3,7 @@ import { meetingsAPI } from '../../services/api';
 import type { MeetingState, CreateMeetingData, UpdateMeetingData, MeetingTimeSlot } from '../../types';
 
 const initialState: MeetingState = {
-  meetings: [],
+  meetings: [] as MeetingTimeSlot[],
   isLoading: false,
   error: null,
 };

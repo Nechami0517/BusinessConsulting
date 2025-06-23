@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchServices } from '../../store/slices/servicesSlice';
-import { fetchManagerMeetings } from '../../store/slices/meetingsSlice';
+import { fetchMeetings } from '../../store/slices/meetingsSlice';
 import { logoutUser } from '../../store/slices/authSlice';
 import { LogOut, BarChart3, Calendar, Settings, Users } from 'lucide-react';
 import ServicesPage from './ServicesPage';
@@ -17,7 +17,7 @@ const ManagerDashboard: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchServices());
-    dispatch(fetchManagerMeetings());
+    dispatch(fetchMeetings());
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -135,18 +135,18 @@ const ManagerDashboard: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Meetings</h3>
               <div className="space-y-3">
                 {meetings.slice(0, 5).map((meeting) => {
-                  const service = services.find(s => s.id === meeting.serviceId);
+                  // const service = services.find(s => s.id === meeting.serviceId);
                   return (
                     <div key={meeting.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                       <div>
-                        <p className="font-medium text-gray-900">{meeting.clientName}</p>
-                        <p className="text-gray-600 text-sm">{service?.name}</p>
+                      {/* <p className="font-medium text-gray-900">{meeting.clientName}</p> */}
+                        {/* <p className="text-gray-600 text-sm">{service?.}</p> */}
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-gray-600">{meeting.date} at {meeting.time}</p>
+                        <p className="text-sm text-gray-600">{meeting.date} at {meeting.start_time}</p>
                         <span className={`inline-flex px-2 py-1 text-xs rounded-full ${
-                          meeting.status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                          meeting.status === 'pending' ? 'bg-amber-100 text-amber-800' :
+                          meeting.status === 'booked' ? 'bg-emerald-100 text-emerald-800' :
+                          meeting.status === 'available' ? 'bg-amber-100 text-amber-800' :
                           'bg-gray-100 text-gray-800'
                         }`}>
                           {meeting.status}
