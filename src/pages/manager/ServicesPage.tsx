@@ -12,7 +12,7 @@ const ServicesPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingService, setEditingService] = useState<number|undefined>(undefined);
   const [formData, setFormData] = useState({
-    id:number|undefined,
+    id:undefined,
     name: "",
     description: "",
     price: "",
