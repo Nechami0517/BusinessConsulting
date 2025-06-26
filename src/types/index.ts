@@ -20,31 +20,22 @@ export interface User {
 }
 
 export interface Meeting {
-  id: number;
-  user_id: number; 
-  service_id: number; 
-  date: string; 
-  start_time: string; 
-  end_time: string; 
-  status: string; 
-  notes?: string; 
-  service?: {
-      name: string; // שם השירות
-  };
-  client?: {
-      name: string;
-      email: string;
-  };
+    id: number;
+    user_id: number; 
+    service_id: number; 
+    date: string; 
+    start_time: string; 
+    end_time: string; 
+    status: string;
+    service?: {
+        name: string; 
+      };
+      client?: {
+        name: string;
+        email: string;
+    };
 }
 
-// export interface MeetingTimeSlot {
-//   id: number;
-//   date: string; // תאריך
-//   start_time: string; // שעת התחלה
-//   end_time: string; // שעת סיום
-//   status: 'available' | 'booked';
-//   meeting_id?: number; // ID של הפגישה, יכול להיות ריק
-// }
 
 export interface Service {
   id: number;
@@ -68,7 +59,7 @@ export interface ServicesState {
 }
 
 export interface MeetingState {
-  meetings: Meeting[];
+  meetings: Meeting[]; // או MeetingTimeSlot תלוי מה אתה צריך
   isLoading: boolean;
   error: string | null;
 }
@@ -99,7 +90,7 @@ export interface UpdateMeetingData {
 }
 
 export interface CreateServiceData {
-  id: number | undefined;
+   id:number|undefined,
   name: string;
   description: string;
   price: number;

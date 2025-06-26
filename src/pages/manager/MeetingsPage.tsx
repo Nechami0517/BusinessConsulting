@@ -35,9 +35,9 @@ const MeetingsPage: React.FC = () => {
   };
 
   const handleStatusChange = (meetingId: string, newStatus: string) => {
-    dispatch(updateMeeting({ 
-      id: meetingId, 
-      data: { status: newStatus as any } 
+    dispatch(updateMeeting({
+      id: meetingId,
+      data: { status: newStatus as any }
     }));
   };
 
@@ -61,7 +61,6 @@ const MeetingsPage: React.FC = () => {
       <div className="space-y-4">
         {meetings.map((meeting) => {
           const service = services.find(s => s.id === meeting.service_id);
-          // const client = meetings.find(client => client.id === meeting.);
           return (
             <div key={meeting.id} className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:shadow-xl transition-all duration-200">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
