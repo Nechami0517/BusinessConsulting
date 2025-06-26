@@ -16,7 +16,7 @@ export interface User {
   name: string;
   phone?: string;
   email: string;
-  role: 'manager'; 
+  role: 'manager'| 'client'; 
 }
 
 export interface Meeting {
