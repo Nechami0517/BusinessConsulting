@@ -65,6 +65,7 @@ const ClientDashboard: React.FC = () => {
   };
 
   return (
+    
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-emerald-50">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-white/20 sticky top-0 z-10">
