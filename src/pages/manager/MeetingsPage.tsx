@@ -61,10 +61,6 @@ const MeetingsPage: React.FC = () => {
       <div className="space-y-4">
         {meetings.map((meeting) => {
           const service = services.find(s => s.id === meeting.service_id);
-<<<<<<< HEAD
-=======
-          // const client = meetings.find(client => client.id === meeting.);
->>>>>>> 81cf55c1ce5b8eef711ca74129dd601ba5cb1b91
           return (
             <div key={meeting.id} className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:shadow-xl transition-all duration-200">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
@@ -116,22 +112,14 @@ const MeetingsPage: React.FC = () => {
                   {meeting.status === 'pending' && (
                     <>
                       <button
-<<<<<<< HEAD
-                        onClick={() => handleStatusChange(meeting.id, 'confirmed')}
-=======
                         onClick={() => handleStatusChange(meeting.id.toString(), 'confirmed')}
->>>>>>> 81cf55c1ce5b8eef711ca74129dd601ba5cb1b91
                         disabled={isLoading}
                         className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium disabled:opacity-50"
                       >
                         Confirm
                       </button>
                       <button
-<<<<<<< HEAD
-                        onClick={() => handleStatusChange(meeting.id, 'cancelled')}
-=======
                         onClick={() => handleStatusChange(meeting.id.toString(), 'cancelled')}
->>>>>>> 81cf55c1ce5b8eef711ca74129dd601ba5cb1b91
                         disabled={isLoading}
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium disabled:opacity-50"
                       >
@@ -142,22 +130,14 @@ const MeetingsPage: React.FC = () => {
                   {meeting.status === 'confirmed' && (
                     <>
                       <button
-<<<<<<< HEAD
-                        onClick={() => handleStatusChange(meeting.id, 'completed')}
-=======
                         onClick={() => handleStatusChange(meeting.id.toString(), 'completed')}
->>>>>>> 81cf55c1ce5b8eef711ca74129dd601ba5cb1b91
                         disabled={isLoading}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50"
                       >
                         Mark Complete
                       </button>
                       <button
-<<<<<<< HEAD
-                        onClick={() => handleStatusChange(meeting.id, 'cancelled')}
-=======
                         onClick={() => handleStatusChange(meeting.id.toString(), 'cancelled')}
->>>>>>> 81cf55c1ce5b8eef711ca74129dd601ba5cb1b91
                         disabled={isLoading}
                         className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium disabled:opacity-50"
                       >
