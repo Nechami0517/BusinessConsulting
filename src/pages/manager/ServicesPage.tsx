@@ -34,7 +34,7 @@ const ServicesPage: React.FC = () => {
     dispatch(fetchConsultants());
   }, [dispatch]);
 
- const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const serviceData: CreateServiceData = {
@@ -51,23 +51,29 @@ const ServicesPage: React.FC = () => {
             updateService({ id: editingService, data: serviceData })
         );
         if (updateService.fulfilled.match(resultAction)) {
-            // הוסף כאן קריאה ל-API לקשר בין היועצים לשירות
-            await consultantServiceAPI.createConsultantService({
-                service_id: editingService.toString(),
-                consultant_id: selectedConsultants.join(","),
-            });
+            // שליחה של כל יועץ במקביל
+            const promises = selectedConsultants.map(consultantId => 
+                consultantServiceAPI.createConsultantService({
+                    service_id: editingService.toString(),
+                    consultant_id: consultantId,
+                })
+            );
+            await Promise.all(promises);
         }
     } else {
         // יצירת שירות חדש
         const resultAction = await dispatch(createService(serviceData));
         if (createService.fulfilled.match(resultAction)) {
-            // הוסף כאן קריאה ל-API לקשר בין היועצים לשירות
             const service_id = resultAction.payload.id; 
 
-            await consultantServiceAPI.createConsultantService({
-                service_id: service_id!.toString(),
-                consultant_id: selectedConsultants.join(","),
-            });
+            // שליחה של כל יועץ במקביל
+            const promises = selectedConsultants.map(consultantId => 
+                consultantServiceAPI.createConsultantService({
+                    service_id: service_id!.toString(),
+                    consultant_id: consultantId,
+                })
+            );
+            await Promise.all(promises);
         }
     }
 
@@ -83,6 +89,7 @@ const ServicesPage: React.FC = () => {
     setEditingService(undefined);
     setShowForm(false);
 };
+
 
   const handleEdit = (service: any) => {
     setFormData({

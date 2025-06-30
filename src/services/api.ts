@@ -50,9 +50,7 @@ const apiCallWrapper = async (apiCall: () => Promise<any>) => {
   } catch (error) {
     console.error('API Error:', error);
     if (axios.isAxiosError(error) && error.response?.status === 409) {
-      {
-        alert(axios.isAxiosError(error) && error.response?.data)
-      }
+     
     throw error; // אפשר להחזיר את השגיאה כדי שתוכל לטפל בה במקום אחר אם צריך
     }
   }
