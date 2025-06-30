@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchServices } from '../../store/slices/servicesSlice';
-import { fetchConsultants } from '../../store/slices/businessConsultantSlice'; // נניח שיש לך סלייס ליועצים
-import { consultantServiceAPI } from '../../services/api'; // נוודא שהנתיב נכון
+import { fetchConsultants } from '../../store/slices/businessConsultantSlice'; 
+import { consultantServiceAPI } from '../../services/api';
 
 const ConsultantLinking: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -10,6 +10,8 @@ const ConsultantLinking: React.FC = () => {
   const { consultants } = useAppSelector((state) => state.consultants);
   const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
   const [selectedConsultants, setSelectedConsultants] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     dispatch(fetchServices());
@@ -34,11 +36,17 @@ const ConsultantLinking: React.FC = () => {
         await Promise.all(selectedConsultants.map(consultant_id => 
           consultantServiceAPI.createConsultantService({ service_id: selectedServiceId, consultant_id })
         ));
-        setSelectedConsultants([]); // איפוס הבחירות של היועצים לאחר שליחה
-        setSelectedServiceId(''); // איפוס הבחירה של השירות לאחר שליחה
+        setSelectedConsultants([]);
+        setSelectedServiceId('');
+        setSuccessMessage('The link was created successfully! Thank you!');
+        setIsVisible(true);
+        setTimeout(() => {
+          setIsVisible(false);
+          setSuccessMessage(null);
+        }, 5000);
       } catch (error) {
-        setSelectedConsultants([]); // איפוס הבחירות של היועצים לאחר שליחה
-        setSelectedServiceId(''); // איפוס הבחירה של השירות לאחר שליחה
+        setSelectedConsultants([]);
+        setSelectedServiceId('');
         console.error('Error linking consultants to service:', error);
       }
     }
@@ -47,6 +55,12 @@ const ConsultantLinking: React.FC = () => {
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-gray-900">Link Consultants to Service</h2>
+
+      {isVisible && successMessage && (
+        <div className={`fixed top-4 right-4 p-4 mb-4 text-white bg-blue-600 rounded-lg shadow-lg transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+          {successMessage}
+        </div>
+      )}
 
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-2">Select Service</label>
