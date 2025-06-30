@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import servicesReducer from './slices/servicesSlice';
 import meetingsReducer from './slices/meetingsSlice';
+import consultantsReducer from './slices/businessConsultantSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     services: servicesReducer,
     meetings: meetingsReducer,
+    consultants: consultantsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

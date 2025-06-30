@@ -2,22 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchServices } from '../../store/slices/servicesSlice';
 import { fetchMeetings } from '../../store/slices/meetingsSlice';
+import { fetchConsultants } from '../../store/slices/businessConsultantSlice';
 import { logoutUser } from '../../store/slices/authSlice';
 import { LogOut, BarChart3, Calendar, Settings, Users } from 'lucide-react';
 import ServicesPage from './ServicesPage';
 import MeetingsPage from './MeetingsPage';
+import ConsultantLinking from './ConsultantService'; // ייבוא הקומפוננטה החדשה
 
 const ManagerDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'meetings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'meetings' | 'consultant-linking'>('overview'); // עדכון סוג ה-state
   
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { services } = useAppSelector((state) => state.services);
   const { meetings } = useAppSelector((state) => state.meetings);
+  const { consultants } = useAppSelector((state) => state.consultants);
 
   useEffect(() => {
     dispatch(fetchServices());
     dispatch(fetchMeetings());
+    dispatch(fetchConsultants());
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -44,8 +48,14 @@ const ManagerDashboard: React.FC = () => {
       color: 'bg-amber-500'
     },
     {
+      name: 'Total Consultants',
+      value: consultants.length, // עדכון למספר הקונסולטנטים
+      icon: Users,
+      color: 'bg-purple-500'
+    },
+    {
       name: 'Monthly Revenue',
-      value: '$4,280',
+      value: '\\$4,280',
       icon: BarChart3,
       color: 'bg-purple-500'
     }
@@ -54,7 +64,8 @@ const ManagerDashboard: React.FC = () => {
   const tabs = [
     { id: 'overview', name: 'Overview', icon: BarChart3 },
     { id: 'services', name: 'Services', icon: Settings },
-    { id: 'meetings', name: 'Meetings', icon: Calendar }
+    { id: 'meetings', name: 'Meetings', icon: Calendar },
+    { id: 'consultant-linking', name: 'Consultant Linking', icon: Users } // טאב חדש
   ];
 
   return (
@@ -135,12 +146,10 @@ const ManagerDashboard: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Meetings</h3>
               <div className="space-y-3">
                 {meetings.slice(0, 5).map((meeting) => {
-                  // const service = services.find(s => s.id === meeting.serviceId);
                   return (
                     <div key={meeting.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                       <div>
-                      {/* <p className="font-medium text-gray-900">{meeting.clientName}</p> */}
-                        {/* <p className="text-gray-600 text-sm">{service?.}</p> */}
+                        {/* <p className="font-medium text-gray-900">{meeting.clientName}</p> */}
                       </div>
                       <div className="text-right">
                         <p className="text-sm text-gray-600">{meeting.date} at {meeting.start_time}</p>
@@ -165,6 +174,9 @@ const ManagerDashboard: React.FC = () => {
 
         {/* Meetings Tab */}
         {activeTab === 'meetings' && <MeetingsPage />}
+
+        {/* Consultant Linking Tab */}
+        {activeTab === 'consultant-linking' && <ConsultantLinking />} {/* הוספת הקומפוננטה החדשה */}
       </div>
     </div>
   );

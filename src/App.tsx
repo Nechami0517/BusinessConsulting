@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import ManagerDashboard from './pages/manager/ManagerDashboard';
 import ClientDashboard from './pages/client/ClientDashboard';
 
+
 const AppContent: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user, isLoading } = useAppSelector((state) => state.auth);
