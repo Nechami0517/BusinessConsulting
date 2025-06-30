@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   createService,
@@ -7,10 +7,14 @@ import {
 } from "../../store/slices/servicesSlice";
 import { Plus, Edit2, Trash2, DollarSign, Clock, Tag } from "lucide-react";
 import type { CreateServiceData } from "../../types";
+import { fetchConsultants } from "../../store/slices/consultantServiceSlice"; // ייבוא של האקשן
+import {  consultantServiceAPI } from "../../services/api";
 
 const ServicesPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [editingService, setEditingService] = useState<number | undefined>(undefined);
+  const [editingService, setEditingService] = useState<number | undefined>(
+    undefined
+  );
   const [formData, setFormData] = useState({
     id: undefined,
     name: "",
@@ -18,39 +22,65 @@ const ServicesPage: React.FC = () => {
     price: "",
     duration: "",
   });
+  const [selectedConsultants, setSelectedConsultants] = useState<string[]>([]);
 
   const dispatch = useAppDispatch();
   const { services, isLoading, error } = useAppSelector(
     (state) => state.services
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const { consultants } = useAppSelector((state) => state.consultantServices);
+  useEffect(() => {
+    dispatch(fetchConsultants());
+  }, [dispatch]);
+
+ const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const serviceData: CreateServiceData = {
-      id: formData.id,
-      name: formData.name,
-      description: formData.description,
-      price: parseFloat(formData.price),
-      duration: parseInt(formData.duration),
+        id: formData.id,
+        name: formData.name,
+        description: formData.description,
+        price: parseFloat(formData.price),
+        duration: parseInt(formData.duration),
     };
 
     if (editingService !== undefined) {
-      // עדכון שירות קיים
-      const resultAction = await dispatch(updateService({ id: editingService, data: serviceData }));
-      if (updateService.fulfilled.match(resultAction)) {
-        console.log("Service updated successfully:", resultAction.payload);
-      }
+        // עדכון שירות קיים
+        const resultAction = await dispatch(
+            updateService({ id: editingService, data: serviceData })
+        );
+        if (updateService.fulfilled.match(resultAction)) {
+            // הוסף כאן קריאה ל-API לקשר בין היועצים לשירות
+            await consultantServiceAPI.createConsultantService({
+                service_id: editingService.toString(),
+                consultant_id: selectedConsultants.join(","),
+            });
+        }
     } else {
-      // יצירת שירות חדש
-      const resultAction = await dispatch(createService(serviceData));
-      if (createService.fulfilled.match(resultAction)) {
-        console.log("Service created successfully:", resultAction.payload);
-      }
+        // יצירת שירות חדש
+        const resultAction = await dispatch(createService(serviceData));
+        if (createService.fulfilled.match(resultAction)) {
+            // הוסף כאן קריאה ל-API לקשר בין היועצים לשירות
+            const service_id = resultAction.payload.id; 
+
+            await consultantServiceAPI.createConsultantService({
+                service_id: service_id!.toString(),
+                consultant_id: selectedConsultants.join(","),
+            });
+        }
     }
 
-    setFormData({ id: undefined, name: "", description: "", price: "", duration: "" }); // איפוס הנתונים
-    setEditingService(undefined); 
+    // איפוס הנתונים
+    setFormData({
+        id: undefined,
+        name: "",
+        description: "",
+        price: "",
+        duration: "",
+    });
+    setSelectedConsultants([]); // איפוס היועצים הנבחרים
+    setEditingService(undefined);
     setShowForm(false);
 };
 
@@ -73,7 +103,13 @@ const ServicesPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    setFormData({ id: undefined, name: "", description: "", price: "", duration: "" });
+    setFormData({
+      id: undefined,
+      name: "",
+      description: "",
+      price: "",
+      duration: "",
+    });
     setEditingService(undefined);
     setShowForm(false);
   };
@@ -100,10 +136,10 @@ const ServicesPage: React.FC = () => {
       )}
 
       {/* Service Form */}
-      {showForm && ( 
+      {showForm && (
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl">
           <h3 className="text-lg font-semibold mb-4">
-            {editingService !=-1 ? "Edit Service" : "Add New Service"}
+            {editingService != -1 ? "Edit Service" : "Add New Service"}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -171,13 +207,40 @@ const ServicesPage: React.FC = () => {
                 />
               </div>
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Select Business Consultants
+              </label>
+              {consultants.map((consultant) => (
+                <div key={consultant.id}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      value={consultant.id}
+                      checked={selectedConsultants.includes(consultant.id.toString())}
+                      onChange={(e) => {
+                        const id = e.target.value;
+                        setSelectedConsultants((prev) =>
+                          prev.includes(id)
+                            ? prev.filter((c) => c !== id)
+                            : [...prev, id]
+                        );
+                      }}
+                    />
+                    {consultant.name}
+                  </label>
+                </div>
+              ))}
+            </div>
             <div className="flex space-x-3">
               <button
                 type="submit"
                 disabled={isLoading}
                 className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
               >
-                {editingService !== undefined ? "Update Service" : "Add Service"}
+                {editingService !== undefined
+                  ? "Update Service"
+                  : "Add Service"}
               </button>
               <button
                 type="button"
@@ -216,7 +279,7 @@ const ServicesPage: React.FC = () => {
                   <Edit2 className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => handleDelete(service.id.toString())}
+                  onClick={() => handleDelete((service.id ?? "").toString())}
                   disabled={isLoading}
                   className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
                 >

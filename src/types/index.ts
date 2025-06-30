@@ -98,9 +98,25 @@ export interface CreateServiceData {
   description: string;
   price: number;
   duration: number;
-  // category: string;
 }
 
 export interface UpdateServiceData extends Partial<CreateServiceData> {
   isActive?: boolean;
+}
+
+
+ 
+
+export interface BusinessConsultant {
+  id: number; 
+  name: string; 
+  password: string; 
+  email: string; 
+  role: 'manager' | 'consultant'; 
+}
+
+export interface BusinessConsultantState {
+  consultants: BusinessConsultant[];
+  isLoading: boolean;
+  error: string | null;
 }
