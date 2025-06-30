@@ -8,7 +8,7 @@ import type {
   UpdateServiceData,
   CreateMeetingData,
   UpdateMeetingData,
-  MeetingTimeSlot,
+  Meeting,
 } from '../types';
 
 const API_BASE_URL = import.meta.env.API_BASE_URL || 'http://localhost:3000';
@@ -50,6 +50,8 @@ export const authAPI = {
   },
 
   register: async (data: RegisterData): Promise<{ user: User; token: string }> => {
+    console.log('Registering user:', data);
+    
     const response = await api.post('/login/register', data);
     return response.data;
   },
@@ -109,37 +111,37 @@ export const servicesAPI = {
 
 // MeetingTimeSlots API
 export const meetingsAPI = {
-  getMeetings: async (): Promise<MeetingTimeSlot[]> => {
-    const response = await api.get('/services');
+  getMeetings: async (): Promise<Meeting[]> => {
+    const response = await api.get('/meeting');
     return response.data;
   },
 
-  getMeetingById: async (id: string): Promise<MeetingTimeSlot> => {
-    const response = await api.get(`/services/${id}`);
+  getMeetingById: async (id: string): Promise<Meeting> => {
+    const response = await api.get(`/meeting/${id}`);
     return response.data;
   },
 
-  createMeeting: async (data: CreateMeetingData): Promise<MeetingTimeSlot> => {
-    const response = await api.post('/services', data);
+  createMeeting: async (data: CreateMeetingData): Promise<Meeting> => {
+    const response = await api.post('/meeting', data);
     return response.data;
   },
 
-  updateMeeting: async (id: string, data: UpdateMeetingData): Promise<MeetingTimeSlot> => {
-    const response = await api.put(`/services/${id}`, data);
+  updateMeeting: async (id: string, data: UpdateMeetingData): Promise<Meeting> => {
+    const response = await api.put(`/meeting/${id}`, data);
     return response.data;
   },
 
   deleteMeeting: async (id: string): Promise<void> => {
-    await api.delete(`/services/${id}`);
+    await api.delete(`/meeting/${id}`);
   },
 
-  getManagerMeetings: async (): Promise<MeetingTimeSlot[]> => {
-    const response = await api.get('/services/manager');
+  getManagerMeetings: async (): Promise<Meeting[]> => {
+    const response = await api.get('/meeting/manager');
     return response.data;
   },
 
-  getClientMeetings: async (): Promise<MeetingTimeSlot[]> => {
-    const response = await api.get('/services/client');
+  getClientMeetings: async (): Promise<Meeting[]> => {
+    const response = await api.get('/meeting/client');
     return response.data;
   },
 };

@@ -1,5 +1,5 @@
 
-// פרטי העסק
+
 export interface BusinessDetail {
   id: number;
   name: string;
@@ -10,7 +10,7 @@ export interface BusinessDetail {
   description?: string;
 }
 
-// 
+ 
 export interface User {
   id: number;
   name: string;
@@ -34,6 +34,7 @@ export interface Meeting {
         name: string;
         email: string;
     };
+    notes?: string;
 }
 
 
@@ -41,12 +42,12 @@ export interface Service {
   id: number;
   name: string;
   description?: string;
-  duration: number; // משך בשעות
-  price: number; // מחיר
+  duration: number; 
+  price: number; 
 }
 
 export interface AuthState {
-  user: User | null; // יכול להיות לקוח או מנהל
+  user: User | null; 
   token: string | null;
   isLoading: boolean;
   error: string | null;
@@ -59,7 +60,7 @@ export interface ServicesState {
 }
 
 export interface MeetingState {
-  meetings: Meeting[]; // או MeetingTimeSlot תלוי מה אתה צריך
+  meetings: Meeting[]; 
   isLoading: boolean;
   error: string | null;
 }
