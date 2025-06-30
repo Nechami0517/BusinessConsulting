@@ -36,13 +36,12 @@ const AppContent: React.FC = () => {
           </ProtectedRoute>
         } 
       />
-      <Route 
+       <Route 
         path="/client/*" 
         element={
           <ProtectedRoute requiredRole="client">
             <ClientDashboard />
           </ProtectedRoute>
-          
         } 
       />
       <Route 

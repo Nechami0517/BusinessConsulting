@@ -216,7 +216,7 @@ const ServicesPage: React.FC = () => {
                   <Edit2 className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => handleDelete(service.id.toString())}
+                  onClick={() => handleDelete((service.id ?? "").toString())}
                   disabled={isLoading}
                   className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
                 >

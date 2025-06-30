@@ -28,22 +28,22 @@ export interface Meeting {
     end_time: string; 
     status: string;
     service?: {
-        name: string; 
-      };
-      client?: {
-        name: string;
-        email: string;
+      name: string; 
+    };
+    client?: {
+      name: string;
+      email: string;
     };
     notes?: string;
 }
 
 
 export interface Service {
-  id: number;
+  id: number| undefined;
   name: string;
   description?: string;
   duration: number; 
-  price: number; 
+  price: number;
 }
 
 export interface AuthState {
@@ -91,7 +91,8 @@ export interface UpdateMeetingData {
 }
 
 export interface CreateServiceData {
-   id:number|undefined,
+
+  id: number | undefined;
   name: string;
   description: string;
   price: number;
