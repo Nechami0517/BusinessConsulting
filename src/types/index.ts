@@ -1,5 +1,5 @@
 
-// פרטי העסק
+
 export interface BusinessDetail {
   id: number;
   name: string;
@@ -10,44 +10,44 @@ export interface BusinessDetail {
   description?: string;
 }
 
-// 
+
 export interface User {
   id: number;
   name: string;
   phone?: string;
   email: string;
-  role: 'manager'| 'client'; 
+  role: 'manager' | 'client';
 }
 
 export interface Meeting {
-    id: number;
-    user_id: number; 
-    service_id: number; 
-    date: string; 
-    start_time: string; 
-    end_time: string; 
-    status: string;
-    service?: {
-      name: string; 
-    };
-    client?: {
-      name: string;
-      email: string;
-    };
-    notes?: string;
+  id: number;
+  user_id: number;
+  service_id: number;
+  date: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+  service?: {
+    name: string;
+  };
+  client?: {
+    name: string;
+    email: string;
+  };
+  notes?: string;
 }
 
 
 export interface Service {
-  id: number| undefined;
+  id: number | undefined;
   name: string;
   description?: string;
-  duration: number; 
+  duration: number;
   price: number;
 }
 
 export interface AuthState {
-  user: User | null; 
+  user: User | null;
   token: string | null;
   isLoading: boolean;
   error: string | null;
@@ -60,12 +60,17 @@ export interface ServicesState {
 }
 
 export interface MeetingState {
-
-  meetings: Meeting[]; 
+  meetings: Meeting[];
   isLoading: boolean;
   error: string | null;
 }
-
+export interface BusinessConsultantState {
+  id: number; // מזהה ייחודי
+  name: string; // שם היועץ
+  password: string; // סיסמת היועץ
+  email: string; // דוא"ל היועץ
+  role: 'manager' | 'consultant'; // תפקיד היועץ
+}
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -75,9 +80,9 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
-  phone:string;
+  phone: string;
 }
-export interface  CreateMeetingData{
+export interface CreateMeetingData {
   serviceId: string;
   date: string;
   time: string;

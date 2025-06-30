@@ -29,7 +29,7 @@ const ServicesPage: React.FC = () => {
     (state) => state.services
   );
 
-  const { consultants } = useAppSelector((state) => state.consultantServices);
+  const { consultants } = useAppSelector((state) => state.consultants);
   useEffect(() => {
     dispatch(fetchConsultants());
   }, [dispatch]);

@@ -195,7 +195,7 @@ const LoginPage: React.FC = () => {
 
             <button
               type="submit"
-              disabled={isLoading||registering}
+              disabled={isLoading || registering}
               className="w-full flex items-center justify-center py-3 px-4 rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 font-medium group disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
